@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fillTables } from './fillTables';
 
 type BreedState = {
-  breedTableOne: string[];
-  breedTableTwo: string[];
+  breedTableOne: object[];
+  breedTableTwo: object[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | undefined;
 };
