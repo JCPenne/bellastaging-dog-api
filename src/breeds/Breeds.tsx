@@ -23,17 +23,7 @@ import {
   Stack,
   Typography,
   Backdrop,
-  createTheme,
-  ThemeProvider,
 } from '@mui/material';
-
-const theme = createTheme({
-  palette: {
-    primary: { main: '#FCA311' },
-    secondary: { main: '#4A6DB8' },
-    background: { paper: '#C17767' },
-  },
-});
 
 export function Breeds() {
   const dispatch = useAppDispatch();
@@ -79,29 +69,44 @@ export function Breeds() {
   return Object.keys(TableOneData).length === 0 ? (
     <Typography variant='h1'>Loading</Typography>
   ) : (
-    <ThemeProvider theme={theme}>
+    <>
       <Backdrop
         open={BackdropOpen}
         onClick={() => setBackdropOpen(!BackdropOpen)}
-        sx={{ color: 'primary.main' }}
       >
-        <Typography variant='h2'>Woof Invalid Action Woof</Typography>
+        <Typography variant='h1'>Woof Invalid Action Woof</Typography>
       </Backdrop>
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={{ xs: 1, sm: 8, md: 16 }}
+          sx={{
+            position: 'center',
+            padding: 16,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
         >
           <Table
             sx={{
-              maxWidth: 600,
+              maxWidth: 900,
               minWidth: 300,
-              color: 'secondary.main',
-              backgroundColor: 'background.paper',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
-            <TableHead>Breed Table 1</TableHead>
+            <TableHead
+              sx={{
+                typography: { xs: 'h1', sm: 'h2', md: 'h3', l: 'h4' },
+                paddingBottom: 5,
+              }}
+            >
+              Table 1
+            </TableHead>
             <Droppable droppableId='1'>
               {provided => (
                 <TableBody
@@ -121,8 +126,16 @@ export function Breeds() {
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
                           >
-                            <TableCell>{index + 1}</TableCell>
-                            <TableCell>{entry.breed}</TableCell>
+                            <TableCell
+                              sx={{ typography: { sm: 'h4', xs: 'h3' } }}
+                            >
+                              {index + 1}
+                            </TableCell>
+                            <TableCell
+                              sx={{ typography: { sm: 'h4', xs: 'h3' } }}
+                            >
+                              {entry.breed}
+                            </TableCell>
                           </TableRow>
                         )}
                       </Draggable>
@@ -133,8 +146,23 @@ export function Breeds() {
               )}
             </Droppable>
           </Table>
-          <Table sx={{ maxWidth: 600, minWidth: 300 }}>
-            <TableHead>Breed Table 2</TableHead>
+          <Table
+            sx={{
+              maxWidth: 900,
+              minWidth: 300,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <TableHead
+              sx={{
+                typography: { xs: 'h1', sm: 'h2', md: 'h3', l: 'h4' },
+                paddingBottom: 5,
+              }}
+            >
+              Table 2
+            </TableHead>
             <Droppable droppableId='2'>
               {provided => (
                 <TableBody
@@ -154,8 +182,16 @@ export function Breeds() {
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}
                           >
-                            <TableCell>{index + 1}</TableCell>
-                            <TableCell>{entry.breed}</TableCell>
+                            <TableCell
+                              sx={{ typography: { sm: 'h4', xs: 'h3' } }}
+                            >
+                              {index + 1}
+                            </TableCell>
+                            <TableCell
+                              sx={{ typography: { sm: 'h4', xs: 'h3' } }}
+                            >
+                              {entry.breed}
+                            </TableCell>
                           </TableRow>
                         )}
                       </Draggable>
@@ -168,6 +204,6 @@ export function Breeds() {
           </Table>
         </Stack>
       </DragDropContext>
-    </ThemeProvider>
+    </>
   );
 }
