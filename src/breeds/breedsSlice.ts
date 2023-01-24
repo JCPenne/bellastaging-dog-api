@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fillTables } from './fillTables';
 
 type BreedState = {
@@ -19,11 +19,19 @@ export const breedsSlice = createSlice({
   name: 'breeds',
   initialState: initialState,
   reducers: {
-    sameTableDrop: (state = initialState, action) => {
-      const { sourceIndex, destinationIndex, entryData } = action.payload;
+    dropHandler: (state = initialState, action) => {
+      const { source, destination, entryData } = action.payload;
 
-      state.breedTableOne.splice(sourceIndex, 1);
-      state.breedTableOne.splice(destinationIndex, 0, entryData);
+      const sourceTable =
+        source.droppableId === '1' ? state.breedTableOne : state.breedTableTwo;
+      const destinationTable =
+        destination.droppableId === '1'
+          ? state.breedTableOne
+          : state.breedTableTwo;
+
+
+      sourceTable.splice(source.index, 1);
+      destinationTable.splice(destination.index, 0, entryData);
     },
   },
   extraReducers(builder) {
@@ -52,6 +60,6 @@ export const fetchBreeds = createAsyncThunk('breeds/fetchbreeds', async () => {
 export const selectTableOne = (state: any) => state.breeds.breedTableOne;
 export const selectTableTwo = (state: any) => state.breeds.breedTableTwo;
 
-export const { sameTableDrop } = breedsSlice.actions;
+export const { dropHandler } = breedsSlice.actions;
 
 export default breedsSlice.reducer;
