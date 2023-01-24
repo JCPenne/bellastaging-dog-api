@@ -10,6 +10,9 @@ import { useAppSelector, useAppDispatch } from '../app/hooks';
 // Import Slices
 import { fetchBreeds, selectTableOne, selectTableTwo } from './breedsSlice';
 
+// Import Reducers
+import { sameTableDrop } from './breedsSlice';
+
 // Import MUI Components
 import {
   Table,
@@ -32,15 +35,39 @@ export function Breeds() {
     }
   }, [breedStatus, dispatch]);
 
+  const onDragEnd = (result: any) => {
+    console.log(result);
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+    if (destination.droppableId === source.droppableId) {
+      dispatch(
+        sameTableDrop({
+          sourceIndex: source.index,
+          destinationIndex: destination.index,
+          entryData: TableOneData[source.index],
+        }),
+      );
+    }
+  };
+
   return Object.keys(TableOneData).length > 0 ? (
-    <DragDropContext onDragEnd={() => {}}>
+    <DragDropContext onDragEnd={onDragEnd}>
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
         spacing={{ xs: 1, sm: 8, md: 16 }}
       >
         <Table sx={{ maxWidth: 600, minWidth: 300 }}>
           <TableHead></TableHead>
-          <Droppable droppableId='1'>
+          <Droppable droppableId='Table 1'>
             {provided => (
               <TableBody
                 ref={provided.innerRef}
@@ -59,7 +86,7 @@ export function Breeds() {
                           {...provided.dragHandleProps}
                           ref={provided.innerRef}
                         >
-                          <TableCell>{index}</TableCell>
+                          <TableCell>{index + 1}</TableCell>
                           <TableCell>{entry.breed}</TableCell>
                         </TableRow>
                       )}
@@ -71,18 +98,39 @@ export function Breeds() {
             )}
           </Droppable>
         </Table>
+        {/* <<<<<<<<<<<< Second Table >>>>>>>>>>>> */}
         <Table sx={{ maxWidth: 600, minWidth: 300 }}>
           <TableHead></TableHead>
-          <TableBody>
-            {TableTwoData.map(
-              (entry: { id: string; breed: string }, index: number) => (
-                <TableRow key={index}>
-                  <TableCell>{index}</TableCell>
-                  <TableCell>{entry.breed}</TableCell>
-                </TableRow>
-              ),
+          <Droppable droppableId='Table 2'>
+            {provided => (
+              <TableBody
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {TableTwoData.map(
+                  (entry: { id: string; breed: string }, index: number) => (
+                    <Draggable
+                      draggableId={entry.id}
+                      index={index}
+                      key={entry.id}
+                    >
+                      {provided => (
+                        <TableRow
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          ref={provided.innerRef}
+                        >
+                          <TableCell>{index + 1}</TableCell>
+                          <TableCell>{entry.breed}</TableCell>
+                        </TableRow>
+                      )}
+                    </Draggable>
+                  ),
+                )}
+                {provided.placeholder}
+              </TableBody>
             )}
-          </TableBody>
+          </Droppable>
         </Table>
       </Stack>
     </DragDropContext>

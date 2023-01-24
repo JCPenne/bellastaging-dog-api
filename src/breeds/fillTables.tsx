@@ -8,18 +8,22 @@ export function fillTables(payload: object) {
   const result: Array<Array<object>> = [listOne, listTwo];
 
   while (listOne.length < 10) {
-    const num = Math.floor(Math.random() * numOfBreeds);
-    // if (!Object.values(listOne).includes({ breed: breedKeys[num] })) {
-    counterOne += 1;
-    listOne.push({ id: counterOne.toString(), breed: breedKeys[num] });
-    // }
+    const breed = breedKeys[Math.floor(Math.random() * numOfBreeds)];
+
+    if (!listOne.find(e => Object.values(e)[1] === breed)) {
+      listOne.push({ id: counterOne.toString(), breed: breed });
+      counterOne += 1;
+    }
   }
   while (Object.keys(listTwo).length < 10) {
-    const num = Math.floor(Math.random() * numOfBreeds);
+    const breed = breedKeys[Math.floor(Math.random() * numOfBreeds)];
 
-    if (!Object.values(listTwo).includes({ breed: breedKeys[num] })) {
-      counterOne = counterOne + 1;
-      listTwo.push({ id: counterOne, breed: breedKeys[num] });
+    if (
+      !listOne.find(e => Object.values(e)[1] === breed) &&
+      !listTwo.find(e => Object.values(e)[1] === breed)
+    ) {
+      listTwo.push({ id: counterOne.toString(), breed: breed });
+      counterOne += 1;
     }
   }
   return result;

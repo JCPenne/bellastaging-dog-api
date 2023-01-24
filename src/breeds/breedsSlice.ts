@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fillTables } from './fillTables';
 
 type BreedState = {
@@ -18,10 +18,17 @@ const initialState: BreedState = {
 export const breedsSlice = createSlice({
   name: 'breeds',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    sameTableDrop: (state = initialState, action) => {
+      const { sourceIndex, destinationIndex, entryData } = action.payload;
+
+      state.breedTableOne.splice(sourceIndex, 1);
+      state.breedTableOne.splice(destinationIndex, 0, entryData);
+    },
+  },
   extraReducers(builder) {
     builder
-      .addCase(fetchBreeds.pending, (state, action) => {
+      .addCase(fetchBreeds.pending, state => {
         state.status = 'loading';
       })
       .addCase(fetchBreeds.fulfilled, (state, action) => {
@@ -44,5 +51,7 @@ export const fetchBreeds = createAsyncThunk('breeds/fetchbreeds', async () => {
 
 export const selectTableOne = (state: any) => state.breeds.breedTableOne;
 export const selectTableTwo = (state: any) => state.breeds.breedTableTwo;
+
+export const { sameTableDrop } = breedsSlice.actions;
 
 export default breedsSlice.reducer;
