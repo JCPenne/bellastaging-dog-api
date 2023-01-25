@@ -67,14 +67,21 @@ export function Breeds() {
   };
 
   return Object.keys(TableOneData).length === 0 ? (
-    <Typography variant='h1'>Loading</Typography>
+    <Typography>Loading</Typography>
   ) : (
     <>
       <Backdrop
         open={BackdropOpen}
         onClick={() => setBackdropOpen(!BackdropOpen)}
       >
-        <Typography variant='h1'>Woof Invalid Action Woof</Typography>
+        <Typography
+          color='antiquewhite'
+          sx={{
+            typography: { xs: 'h1', sm: 'h2', md: 'h3', l: 'h4' },
+          }}
+        >
+          Woof Invalid Action Woof
+        </Typography>
       </Backdrop>
 
       <DragDropContext onDragEnd={onDragEnd}>
