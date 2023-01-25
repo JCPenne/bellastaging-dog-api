@@ -86,7 +86,7 @@ export function Breeds() {
             padding: 16,
             display: 'flex',
             flexDirection: 'column',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'space-between',
           }}
         >
